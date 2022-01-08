@@ -5,17 +5,25 @@ import 'dart:math';
 
 import 'package:homework03/game.dart';
 
+
 void main() {
-  var game = MyGame();
+
 
   while(true){
+    stdout.write('Enter a maximum number to random: ');
+    var randomToUser  = int.tryParse(stdin.readLineSync()!); //! คือไม่ให้เป็น null
+    if(randomToUser == null){
+      continue;
+    }
+    var game = Game(maxRandom:randomToUser);
+    print('');
     print('╔════════════════════════════════════════');
     print('║            GUESS THE NUMBER            ');
     print('╟────────────────────────────────────────');
     var guessCount = 0;
     var isCorrect = false;
     do {
-      stdout.write('║ Guess the number between 1 and ${MyGame.maxRandom}: ');
+      stdout.write('║ Guess the number between 1 and ${game.maxRandom}: ');
       var input = stdin.readLineSync();
       var guess = int.tryParse(input!);
 
@@ -33,6 +41,7 @@ void main() {
         print('║ ➜ $guess is CORRECT ❤, total guesses: $guessCount');
         print('╟────────────────────────────────────────');
         isCorrect = true;
+        Game.myList.add(guessCount);
       }
     } while (!isCorrect);
 
@@ -47,9 +56,13 @@ void main() {
         break;
       }
       else if(get.toUpperCase()=='N'){
+        print("\n\nYou've played ${Game.myList.length} games");
+        for(int i=0; i<Game.myList.length; i++){
+          print('🚀 Game #${i+1}: ${Game.myList[i]} guesses');
+        }
         exit (0);
       }
     }
-    game = MyGame();
+    print('');
   }
 }
